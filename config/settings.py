@@ -44,16 +44,22 @@ DJANGO_MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CUSTOM_MIDDLEWARE = []
+
 THIRD_MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_MIDDLEWARE
+MIDDLEWARE = DJANGO_MIDDLEWARE + CUSTOM_MIDDLEWARE + THIRD_MIDDLEWARE
 
 ROOT_URLCONF = 'config.urls'
 
 AUTH_USER_MODEL = 'member.Member'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'config.middlewares.exception_middlewares.custom_exception_handler'
+}
 
 TEMPLATES = [
     {
@@ -114,6 +120,3 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
-
-STMP = 'abc'
