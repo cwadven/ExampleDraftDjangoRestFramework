@@ -3,7 +3,11 @@ from django.db.models import QuerySet
 from like.models import PostLike
 from post.exceptions import PostNotFoundException
 from post.models import Post
-from core.pagination import Page, Pageable, paginate_queryset
+from core.pagination import (
+    OffsetPage,
+    Pageable,
+    offset_paginate_queryset,
+)
 
 
 def get_active_posts() -> QuerySet[Post]:
@@ -12,9 +16,9 @@ def get_active_posts() -> QuerySet[Post]:
     )
 
 
-def get_active_posts_page(pageable: Pageable) -> Page[Post]:
+def get_active_posts_page(pageable: Pageable) -> OffsetPage[Post]:
     queryset = get_active_posts().order_by('-created_at')
-    return paginate_queryset(queryset, pageable)
+    return offset_paginate_queryset(queryset, pageable)
 
 
 def get_active_post(post_id: int) -> Post:

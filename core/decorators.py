@@ -4,13 +4,12 @@ from typing import Callable, Any
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpRequest
 from rest_framework.request import Request
-from rest_framework.exceptions import APIException
 from core.pagination import Pageable
 from core.exceptions import CommonAPIException
 from types import FunctionType
 
 
-def with_pageable(
+def with_offset_pageable(
         default_size: int = 20,
         page_param: str = 'page',
         size_param: str = 'size',

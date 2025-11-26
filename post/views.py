@@ -21,7 +21,7 @@ from post.services.get_post_services import (
 )
 from post.services.update_post_services import update_post
 from core.pagination import Pageable
-from core.decorators import with_pageable
+from core.decorators import with_offset_pageable
 
 
 class PostListView(APIView):
@@ -45,7 +45,7 @@ class PostListView(APIView):
             status=status.HTTP_201_CREATED,
         )
 
-    @with_pageable(
+    @with_offset_pageable(
         default_size=20,
     )
     def get(self, request, pageable):

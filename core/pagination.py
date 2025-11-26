@@ -32,7 +32,7 @@ class Pageable:
 
 
 @dataclass
-class Page(Generic[T]):
+class OffsetPage(Generic[T]):
     items: List[T]
     current_page: int
     size: int
@@ -50,10 +50,10 @@ class Page(Generic[T]):
         self.has_prev = self.current_page > 1
 
 
-def paginate_queryset(
+def offset_paginate_queryset(
         queryset: QuerySet[T],
         pageable: Pageable,
-) -> Page[T]:
+) -> OffsetPage[T]:
     """
     Efficient pagination for Django QuerySet using count() and slicing.
     """
@@ -61,7 +61,7 @@ def paginate_queryset(
     start = pageable.offset
     end = start + pageable.limit
     items: List[T] = list(queryset[start:end])
-    return Page(
+    return OffsetPage(
         items=items,
         current_page=pageable.page,
         size=pageable.size,

@@ -1,9 +1,13 @@
-from .pagination import Page, Pageable, paginate_queryset
-from .decorators import with_pageable
+from core.pagination import (
+    OffsetPage,
+    Pageable,
+    offset_paginate_queryset,
+)
+from core.decorators import with_offset_pageable
 
 __all__ = [
-    'Page',
+    'OffsetPage',
     'Pageable',
-    'paginate_queryset',
-    'with_pageable',
+    'offset_paginate_queryset',
+    'with_offset_pageable',
 ]

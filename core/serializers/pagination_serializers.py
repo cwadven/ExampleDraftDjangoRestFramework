@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-class PaginationSerializer(serializers.Serializer):
+class OffsetPaginationSerializer(serializers.Serializer):
     current_page = serializers.IntegerField()
     size = serializers.IntegerField()
     total_count = serializers.IntegerField()

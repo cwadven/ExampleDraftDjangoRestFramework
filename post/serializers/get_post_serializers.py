@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.serializers.pagination_serializers import PaginationSerializer
+from core.serializers.pagination_serializers import OffsetPaginationSerializer
 from post.services.get_post_services import get_post_liked
 
 
@@ -54,5 +54,5 @@ class PostDetailSerializer(serializers.Serializer):
         return get_post_liked(requested_guest_id, obj.id)
 
 
-class PostListResponseSerializer(PaginationSerializer):
+class PostListResponseSerializer(OffsetPaginationSerializer):
     items = PostListSerializer(many=True)
