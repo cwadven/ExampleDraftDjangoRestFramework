@@ -8,7 +8,7 @@ from post.serializers.create_post_serializers import (
 )
 from post.serializers.get_post_serializers import (
     PostDetailSerializer,
-    PostListSerializer,
+    PostListSerializer, PostListResponseSerializer,
 )
 from post.serializers.update_post_serializers import (
     UpdatePostResponseSerializer,
@@ -17,10 +17,11 @@ from post.serializers.update_post_serializers import (
 from post.services.create_post_services import create_post
 from post.services.get_members import get_nickname_by_guest_id
 from post.services.get_post_services import (
-    get_active_post,
-    get_active_posts, get_active_guest_post,
+    get_active_post, get_active_posts_page,
 )
 from post.services.update_post_services import update_post
+from core.pagination import Pageable
+from core.decorators import with_pageable
 
 
 class PostListView(APIView):
@@ -44,18 +45,20 @@ class PostListView(APIView):
             status=status.HTTP_201_CREATED,
         )
 
-    def get(self, request):
-        # Input Serializer
+    @with_pageable(
+        default_size=20,
+    )
+    def get(self, request, pageable):
         # Service Layer
-        posts = get_active_posts().order_by('-created_at')
+        page_result = get_active_posts_page(pageable)
+
         # Output Serializer
         return Response(
-            PostListSerializer(
-                posts,
-                many=True,
+            PostListResponseSerializer(
+                page_result,
                 context={
                     'nickname_by_guest_id': get_nickname_by_guest_id(
-                        {post.guest_id for post in posts}
+                        {post.guest_id for post in page_result.items}
                     ),
                     'requested_guest_id': None,
                 }

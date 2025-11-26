@@ -3,12 +3,18 @@ from django.db.models import QuerySet
 from like.models import PostLike
 from post.exceptions import PostNotFoundException
 from post.models import Post
+from core.pagination import Page, Pageable, paginate_queryset
 
 
 def get_active_posts() -> QuerySet[Post]:
     return Post.objects.filter(
         is_deleted=False,
     )
+
+
+def get_active_posts_page(pageable: Pageable) -> Page[Post]:
+    queryset = get_active_posts().order_by('-created_at')
+    return paginate_queryset(queryset, pageable)
 
 
 def get_active_post(post_id: int) -> Post:
